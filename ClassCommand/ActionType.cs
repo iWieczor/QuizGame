@@ -3,7 +3,11 @@
     public enum ActionType
     {
         Login,
-        Attack
+        Question,
+        Answer,
+        UpdateScore,
+        StartGame,
+        EndGame
     }
 
 
