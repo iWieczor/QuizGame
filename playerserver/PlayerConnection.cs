@@ -16,6 +16,9 @@ namespace playerserver
 
         protected override void OnMessage(MessageEventArgs e)
         {
+            Sessions.Broadcast(e.Data);
+            
+            
             var msg = JsonConvert.DeserializeObject<Message>(e.Data);
             switch (msg.Action)
             {
@@ -28,6 +31,9 @@ namespace playerserver
                     ConnectionManager.Instance.CheckAnswer(this.ID, answer);
                     break;
             }
+
+
+            
         }
 
         public void SendMsg(string msg)
