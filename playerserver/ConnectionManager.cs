@@ -15,7 +15,9 @@ namespace playerserver
         private static ConnectionManager _instance;
 
         private List<PlayerConnection> _connections = new List<PlayerConnection>();
+        Dictionary<string, List<Player>> Lobby = new();
         private Dictionary<string, Player> _players = new();
+        public Dictionary<string, Player> Players { get { return _players; } }
         private ConnectionManager() { }
 
         public static ConnectionManager Instance
@@ -43,12 +45,28 @@ namespace playerserver
         }
         public void AddPlayer(PlayerConnection conn, string nickname)
         {
-            _players[conn.ID] = new Player
+            var player = new Player
             {
                 Id = conn.ID,
                 Nickname = nickname,
                 Score = 0
             };
+            _players.Add(conn.ID,player );
+            if (Lobby.Count == 0)
+                Lobby.Add("jeden", new List<Player>());
+            var lob = Lobby.FirstOrDefault(x => x.Value.Count < 4);
+            if(lob.Key==null)
+            {
+                var list = new List<Player>() { player };
+                Lobby.Add("dwa", list);
+            }
+            else
+            {
+                lob.Value.Add(player);
+            }
+
+
+
         }
         private List<Question> _questions = new List<Question>();
         private int _currentQuestionIndex = -1;
